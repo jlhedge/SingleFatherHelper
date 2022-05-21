@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/.net/FSFProfile/FSFProfile.csproj",
+                "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/.net/FSFProfile/FSFProfile.csproj",
+                "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,9 +33,65 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/.net/FSFProfile/FSFProfile.csproj"
+                "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build: debug",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "singlefatherhelper:dev",
+                "target": "base",
+                "dockerfile": "${workspaceFolder}/.net/UserAuthentication/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj"
+            }
+        },
+        {
+            "type": "docker-build",
+            "label": "docker-build: release",
+            "dependsOn": [
+                "build"
+            ],
+            "dockerBuild": {
+                "tag": "singlefatherhelper:latest",
+                "dockerfile": "${workspaceFolder}/.net/UserAuthentication/Dockerfile",
+                "context": "${workspaceFolder}",
+                "pull": true
+            },
+            "netCore": {
+                "appProject": "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj"
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: debug",
+            "dependsOn": [
+                "docker-build: debug"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj",
+                "enableDebugging": true
+            }
+        },
+        {
+            "type": "docker-run",
+            "label": "docker-run: release",
+            "dependsOn": [
+                "docker-build: release"
+            ],
+            "dockerRun": {},
+            "netCore": {
+                "appProject": "${workspaceFolder}/.net/UserAuthentication/UserAuthentication.csproj"
+            }
         }
     ]
 }

@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: .net/UserAuthentication/Dockerfile
     ports:
-      - 5235:5235
+      - 5174:5174
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     volumes:

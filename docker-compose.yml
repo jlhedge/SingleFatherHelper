@@ -9,4 +9,4 @@ services:
       context: .
       dockerfile: .net/UserAuthentication/Dockerfile
     ports:
-      - 5174:5174
+      - 5235:5235
